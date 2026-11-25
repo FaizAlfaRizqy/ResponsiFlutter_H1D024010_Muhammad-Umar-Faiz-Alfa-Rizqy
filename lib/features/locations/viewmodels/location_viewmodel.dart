@@ -18,7 +18,13 @@ class LocationViewModel extends ChangeNotifier {
 
   Timer? _debounceTimer;
 
-  LocationViewModel({required this.locationRepository});
+  LocationViewModel({required this.locationRepository}) {
+    locationRepository.addListener(_onRepositoryChanged);
+  }
+
+  void _onRepositoryChanged() {
+    loadFavorites();
+  }
 
   LocationSearchStatus get searchStatus => _searchStatus;
   List<LocationModel> get searchResults => _searchResults;
@@ -38,15 +44,22 @@ class LocationViewModel extends ChangeNotifier {
   }
 
   Future<void> loadFavorites() async {
-    _isLoadingFavorites = true;
-    notifyListeners();
-
     try {
-      _favorites = await locationRepository.getFavorites();
-    } catch (_) {}
+      // Step 1: Immediately show local favorites list without waiting for network calls
+      _favorites = await locationRepository.getLocalFavorites();
+      _isLoadingFavorites = false;
+      notifyListeners();
 
-    _isLoadingFavorites = false;
-    notifyListeners();
+      // Step 2: Fetch live weather previews for favorites in the background
+      if (_favorites.isNotEmpty) {
+        final updatedFavs = await locationRepository.fetchFavoritesPreviews(_favorites);
+        _favorites = updatedFavs;
+        notifyListeners();
+      }
+    } catch (_) {
+      _isLoadingFavorites = false;
+      notifyListeners();
+    }
   }
 
   Future<void> loadSearchHistory() async {
@@ -119,13 +132,13 @@ class LocationViewModel extends ChangeNotifier {
     if (index >= 0) {
       _searchResults[index] = _searchResults[index].copyWith(isFavorite: isFav);
     }
-
-    // Refresh favorites list
-    await loadFavorites();
     notifyListeners();
   }
 
   bool _isSameLocation(LocationModel a, LocationModel b) {
+    if (a.id != null && b.id != null && a.id == b.id) {
+      return true;
+    }
     if (a.name.toLowerCase() == b.name.toLowerCase()) {
       return (a.latitude - b.latitude).abs() < 0.1 &&
           (a.longitude - b.longitude).abs() < 0.1;
@@ -135,6 +148,7 @@ class LocationViewModel extends ChangeNotifier {
 
   @override
   void dispose() {
+    locationRepository.removeListener(_onRepositoryChanged);
     _debounceTimer?.cancel();
     super.dispose();
   }

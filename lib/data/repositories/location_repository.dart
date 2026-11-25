@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import '../datasources/location_local_datasource.dart';
 import '../datasources/weather_remote_datasource.dart';
 import '../models/location_model.dart';
 
-class LocationRepository {
+class LocationRepository extends ChangeNotifier {
   final WeatherRemoteDataSource remoteDataSource;
   final LocationLocalDataSource localDataSource;
 
@@ -22,10 +23,14 @@ class LocationRepository {
     }).toList();
   }
 
-  Future<List<LocationModel>> getFavorites() async {
+  /// Get favorites instantly from local data source without waiting for network requests
+  Future<List<LocationModel>> getLocalFavorites() async {
     final favs = await localDataSource.getFavorites();
+    return favs.map((loc) => loc.copyWith(isFavorite: true)).toList();
+  }
 
-    // Fetch live preview temperatures and weather codes for favorites
+  /// Fetch live preview temperatures and weather codes for a list of favorite locations
+  Future<List<LocationModel>> fetchFavoritesPreviews(List<LocationModel> favs) async {
     final updatedList = await Future.wait(
       favs.map((loc) async {
         try {
@@ -47,6 +52,12 @@ class LocationRepository {
     return updatedList;
   }
 
+  /// Get favorites with live preview temperatures and weather codes
+  Future<List<LocationModel>> getFavorites() async {
+    final localFavs = await getLocalFavorites();
+    return fetchFavoritesPreviews(localFavs);
+  }
+
   Future<bool> toggleFavorite(LocationModel location) async {
     final favs = await localDataSource.getFavorites();
     final index = favs.indexWhere((loc) => _isSameLocation(loc, location));
@@ -61,6 +72,7 @@ class LocationRepository {
     }
 
     await localDataSource.saveFavorites(favs);
+    notifyListeners();
     return isNowFavorite;
   }
 
@@ -86,6 +98,9 @@ class LocationRepository {
   }
 
   bool _isSameLocation(LocationModel a, LocationModel b) {
+    if (a.id != null && b.id != null && a.id == b.id) {
+      return true;
+    }
     if (a.name.toLowerCase() == b.name.toLowerCase()) {
       return (a.latitude - b.latitude).abs() < 0.1 &&
           (a.longitude - b.longitude).abs() < 0.1;

@@ -22,7 +22,14 @@ class WeatherViewModel extends ChangeNotifier {
   WeatherViewModel({
     required this.weatherRepository,
     required this.locationRepository,
-  });
+  }) {
+    locationRepository.addListener(_onRepositoryChanged);
+  }
+
+  void _onRepositoryChanged() async {
+    _isFavoriteCurrentLocation = await locationRepository.isFavorite(_currentLocation);
+    notifyListeners();
+  }
 
   WeatherStatus get status => _status;
   WeatherModel? get weather => _weather;
@@ -91,5 +98,11 @@ class WeatherViewModel extends ChangeNotifier {
       _errorMessage = error.toString();
     }
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    locationRepository.removeListener(_onRepositoryChanged);
+    super.dispose();
   }
 }
