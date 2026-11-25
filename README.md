@@ -17,7 +17,9 @@ Atmos adalah aplikasi prakiraan cuaca modern berbasis Flutter dan Dart yang diim
 
 ## 🎬 Video Penjelasan & Demo Aplikasi
 
-[![Video Penjelasan Aplikasi Atmos](https://img.youtube.com/vi/kto_9ZZBg6g/maxresdefault.jpg)](https://youtu.be/kto_9ZZBg6g)
+[![Watch on YouTube](https://img.shields.io/badge/YouTube-Watch%20Demo%20Video-red?style=for-the-badge&logo=youtube)](https://youtu.be/kto_9ZZBg6g)
+
+[![Video Penjelasan Aplikasi Atmos](https://i.ytimg.com/vi/kto_9ZZBg6g/hqdefault.jpg)](https://youtu.be/kto_9ZZBg6g)
 
 > 📹 **Tonton Video Penjelasan Aplikasi di YouTube:** [https://youtu.be/kto_9ZZBg6g](https://youtu.be/kto_9ZZBg6g)
 
