@@ -15,17 +15,23 @@ Atmos adalah aplikasi prakiraan cuaca modern berbasis Flutter dan Dart yang diim
 
 ---
 
+## 🎬 Video Penjelasan & Demo Aplikasi
+
+[![Video Penjelasan Aplikasi Atmos](https://img.youtube.com/vi/kto_9ZZBg6g/maxresdefault.jpg)](https://youtu.be/kto_9ZZBg6g)
+
+> 📹 **Tonton Video Penjelasan Aplikasi di YouTube:** [https://youtu.be/kto_9ZZBg6g](https://youtu.be/kto_9ZZBg6g)
+
+---
+
 ## 📱 Screenshots Aplikasi
 
-| 1. Weather Dashboard | 2. Loading Skeleton | 3. Explore Locations | 4. Search Results |
-|:---:|:---:|:---:|:---:|
-| *(Simpan screenshot Dashboard)* | *(Simpan screenshot Skeleton)* | *(Simpan screenshot Search)* | *(Simpan screenshot Hasil Cari)* |
+| 1. Weather Dashboard | 2. Loading Skeleton | 3. Explore Locations |
+|:---:|:---:|:---:|
+| ![Weather Dashboard](screenshots/weather_dashboard.jpeg) | ![Loading Skeleton](screenshots/loading_skeleton.jpeg) | ![Explore Locations](screenshots/explore_location.jpeg) |
 
-| 5. Favorite Locations | 6. Offline State | 7. Error State | 8. Empty Search State |
-|:---:|:---:|:---:|:---:|
-| *(Simpan screenshot Favorit)* | *(Simpan screenshot Offline)* | *(Simpan screenshot Error)* | *(Simpan screenshot Empty)* |
-
-> **Catatan Pengumpulan:** Simpan tangkapan layar perangkat/emulator ke folder `docs/screenshots/` lalu tautkan ke tabel di atas sebelum pengumpulan akhir.
+| 4. Search Results | 5. Favorite Locations | 6. Offline State |
+|:---:|:---:|:---:|
+| ![Search Results](screenshots/search_result.jpeg) | ![Favorite Locations](screenshots/favorite_location.jpeg) | ![Offline State](screenshots/offline_state.jpeg) |
 
 ---
 
